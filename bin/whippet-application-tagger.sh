@@ -19,7 +19,11 @@ for REPO in $REPOS; do
   if [[ ! " ${TOPICS[*]} " =~ "whippet-app" ]]; then
     touch input.json
     NEW_TOPICS=${TOPICS}
-    NEW_TOPICS+=('whippet-app')
+    if [ ${#TOPICS} -gt 0 ]; then
+      NEW_TOPICS+=('whippet-app')
+    else
+      NEW_TOPICS=('whippet-app')
+    fi
     printf '%s\n' "${NEW_TOPICS[@]}" | jq -R . | jq -s {"names":.} > input.json
     eval "gh api -X PUT repos/$REPO/topics -H accept:application/vnd.github.mercy-preview+json --input input.json --silent"
     echo "$REPO updated"
