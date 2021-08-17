@@ -20,5 +20,4 @@ jobs:
 
       - name: Run tagger script
         run: |
-          cd $GITHUB_WORKSPACE/main
           bin/whippet-application-tagger.sh
