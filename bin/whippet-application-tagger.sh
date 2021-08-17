@@ -28,9 +28,7 @@ for REPO in $REPOS; do
     eval "gh api -X PUT repos/$REPO/topics -H accept:application/vnd.github.mercy-preview+json --input input.json --silent"
     echo "$REPO updated"
     unset NEW_TOPICS
+    rm input.json
   fi
 
 done
-
-# cleanup
-rm input.json
