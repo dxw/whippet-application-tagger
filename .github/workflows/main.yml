@@ -1,0 +1,26 @@
+# Set schedule
+name: whippet-application-tagger
+
+on:
+  schedule:
+  - cron: 0 0-23 * * *
+
+jobs:
+  whippet-application-tagger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: setup
+        uses: actions/checkout@v2
+        env: 
+          GOVPRESS_TOOLS_TOKEN: ${{ secrets.GOVPRESS_TOOLS_TOKEN }}
+
+      - name: Authenticate with GitHub CLI
+        shell: bash       
+        run: |
+          gh auth login --with-token <<< "$GOVPRESS_TOOLS_TOKEN"
+
+      - name: Run tagger script
+        run: |
+          cd $GITHUB_WORKSPACE/main
+          bin/whippet-application-tagger.sh
