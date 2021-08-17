@@ -12,13 +12,11 @@ jobs:
     steps:
       - name: setup
         uses: actions/checkout@v2
-        env: 
-          GOVPRESS_TOOLS_TOKEN: ${{ secrets.GOVPRESS_TOOLS_TOKEN }}
 
       - name: Authenticate with GitHub CLI
         shell: bash       
         run: |
-          gh auth login --with-token <<< "$GOVPRESS_TOOLS_TOKEN"
+          echo "${{ secrets.GOVPRESS_TOOLS_TOKEN }}" | gh auth login --with-token
 
       - name: Run tagger script
         run: |
