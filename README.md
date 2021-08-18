@@ -15,3 +15,10 @@ gh auth login
 ...
 bin/whippet-application-tagger.sh
 ```
+
+Or you can run the action as a whole using (act)[https://github.com/nektos/act]:
+
+* Install act: `brew install act`
+* Run the action: `act -j whippet-application-tagger -s GOVPRESS_TOOLS_TOKEN=[a token that has repo and org access]`
+
+Note: this will actually run the action against live data, so will add the topic to any relevant repos that don't already have it.
