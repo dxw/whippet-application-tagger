@@ -3,7 +3,7 @@ name: whippet-application-tagger
 
 on:
   schedule:
-  - cron: 0 0-23 * * *
+  - cron: 0 8-18 * * MON-FRI
 
 jobs:
   whippet-application-tagger:
