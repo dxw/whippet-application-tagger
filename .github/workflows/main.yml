@@ -29,3 +29,10 @@ jobs:
       - name: Run tagger script
         run: |
           bin/whippet-application-tagger.sh
+      
+      - name: Keep workflow alive
+        uses: dxw/keepalive-workflow@master
+        with:
+          commit_message: Automated commit by Keepalive Workflow to keep the repository active [skip ci]
+          committer_username: dxw-govpress-tools
+          committer_email: team+govpress-tools@govpress.com
