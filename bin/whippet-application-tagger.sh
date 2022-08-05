@@ -11,15 +11,22 @@ for REPO in $REPOS; do
   echo "Checking $REPO"
   # skip archived repos
   REPO_IS_ARCHIVED=$(eval "gh api -X GET repos/$REPO -q '.archived'")
-  if [ "$REPO_IS_ARCHIVED" = true ]; then
-    echo "$REPO is archived, skipping"
-    continue
-  fi
-
   # get the repo topics
   TOPICS=$(eval "gh api -X GET repos/$REPO/topics -H accept:application/vnd.github.mercy-preview+json -q '[ .names[] ]' | jq -r '.[]'")
+  if [ "$REPO_IS_ARCHIVED" = true ]; then
+    if [[ " ${TOPICS[*]} " =~ "whippet-app" ]]; then
+      echo "$REPO is archived but still has whippet-app topic, removing the topic"
+      touch input.json
+      printf '%s\n' "${TOPICS[@]}" | jq -R . | jq -s '{ "names": . }' | jq 'del(.names[] | select(. == "whippet-app"))' > input.json
+      eval "gh api -X PUT repos/$REPO/topics -H accept:application/vnd.github.mercy-preview+json --input input.json --silent"
+      echo "$REPO updated to remove whippet-app tag"
+      rm input.json
+    else
+      echo "$REPO is archived and has no whippet-app tag, skipping"
+      continue
+    fi
   # skip if it already includes the whippet-app topic
-  if [[ ! " ${TOPICS[*]} " =~ "whippet-app" ]]; then
+  elif [[ ! " ${TOPICS[*]} " =~ "whippet-app" ]]; then
     echo "$REPO does not have tag"
     touch input.json
     NEW_TOPICS=${TOPICS}
