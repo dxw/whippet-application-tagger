@@ -19,17 +19,17 @@ jobs:
           curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
           sudo apt update
-          sudo apt install gh 
+          sudo apt install gh
 
       - name: Authenticate with GitHub CLI
-        shell: bash       
+        shell: bash
         run: |
           echo "${{ secrets.GOVPRESS_TOOLS_TOKEN }}" | gh auth login --with-token
 
       - name: Run tagger script
         run: |
           bin/whippet-application-tagger.sh
-      
+
       - name: Keep workflow alive
         uses: gautamkrishnar/keepalive-workflow@c85efc9567a3dadb9b9d4e116aa891f76c0ef7e6
         with:
